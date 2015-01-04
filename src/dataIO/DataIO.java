@@ -42,18 +42,20 @@ public class DataIO {
 
 		HashMap<String, String> map = new HashMap<String, String>();
 		String tempString = new String();
+		String keyString = new String();
 
 		try {
 			BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(file)));
 			while (br.ready()) {
 				tempString = br.readLine();
-				map.put(tempString.substring(0, 57), tempString);
+				keyString = tempString.substring(0, 57);
+				map.put(keyString, tempString);
 			}
 			br.close();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-
+		
 		return map;
 	}
 
