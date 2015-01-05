@@ -8,5 +8,6 @@ package core;
 public class Global {
 	
 	//public static final int ;
+	public static final String encodePath = "encode_format/";
 
 }
