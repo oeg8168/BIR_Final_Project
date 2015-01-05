@@ -56,6 +56,8 @@ public class DataIO {
 			e.printStackTrace();
 		}
 		
+		System.out.println("Read file success! File path: " + file.getAbsolutePath());
+		
 		return map;
 	}
 
