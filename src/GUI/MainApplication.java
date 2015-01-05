@@ -186,8 +186,12 @@ public class MainApplication {
 		// Block 4:
 
 		JButton btnSubmit = new JButton("Submit");
-		btnSubmit.setBounds(10, 378, 200, 50);
+		btnSubmit.setBounds(10, 382, 200, 50);
 		frmNhird.getContentPane().add(btnSubmit);
+
+		JButton btnAbout = new JButton("About");
+		btnAbout.setBounds(484, 402, 90, 30);
+		frmNhird.getContentPane().add(btnAbout);
 
 		// ////////////////////
 
@@ -224,4 +228,5 @@ public class MainApplication {
 			}
 		});
 	}
-}
+
+} // end of class MainApplication
