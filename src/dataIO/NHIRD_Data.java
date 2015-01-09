@@ -6,23 +6,47 @@ import java.util.HashMap;
 
 public abstract class NHIRD_Data {
 
-	protected int dataLength;
-
+	/**
+	 * Storing encode information
+	 */
 	public ArrayList<String> encodeKey;
 	protected HashMap<String, Integer> encodeBeginInd;
 	protected HashMap<String, Integer> encodeEndInd;
 
+	/**
+	 * Storing raw data
+	 */
 	public HashMap<String, String> rawDataMap;
 
+	// Constructor
 	public NHIRD_Data(File file) throws Exception {
 		this.rawDataMap = DataIO.readFile(file);
-		this.dataLength = rawDataMap.get(rawDataMap.keySet().toArray()[0]).length();
-		encode();
-	}
 
+		encode();
+	} // end of constructor
+
+	/**
+	 * Abstract method to define encode version of data <br>
+	 * (By detecting dataLength of one data row)
+	 * 
+	 * @throws Exception
+	 */
 	abstract protected void encode() throws Exception;
+
+	/**
+	 * Abstract method to make index of data by its type
+	 */
 	abstract protected void indexing();
 
+	/**
+	 * Get item from a single data
+	 * 
+	 * @param key
+	 *            - data key
+	 * @param itemKey
+	 *            - key of item that wish to get
+	 * @return String: retrieved data
+	 */
 	public String getItem(String key, String itemKey) {
 		if (rawDataMap.containsKey(key)) {
 			if (encodeBeginInd.containsKey(itemKey) && encodeEndInd.containsKey(itemKey)) {
@@ -36,8 +60,8 @@ public abstract class NHIRD_Data {
 		} else {
 			System.err.println("There is no data with key: " + key);
 		}
-		return null;
-	}
 
+		return null;
+	} // end of function getItem()
 
 } // end of class NHIRD_Data
