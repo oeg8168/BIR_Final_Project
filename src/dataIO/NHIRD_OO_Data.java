@@ -4,15 +4,20 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 
 import core.Global;
 
 public class NHIRD_OO_Data extends NHIRD_Data {
 
+	public HashMap<String, HashSet<String>> drugIndex;
+
 	public NHIRD_OO_Data(File file) throws Exception {
 		super(file);
-		
+
+		indexing();
 	}
 
 	@Override
@@ -20,7 +25,9 @@ public class NHIRD_OO_Data extends NHIRD_Data {
 
 		String encodeFilePath = Global.encodePath + "OO/";
 
-		switch (this.dataLength) {
+		int dataLength = this.rawDataMap.get(rawDataMap.keySet().toArray()[0]).length();
+
+		switch (dataLength) {
 		case 119:
 			encodeFilePath += "OO_86-95.ecf";
 			break;
@@ -39,6 +46,7 @@ public class NHIRD_OO_Data extends NHIRD_Data {
 		}
 
 		File encodeFile = new File(encodeFilePath);
+		this.encodeKey = new ArrayList<String>();
 		this.encodeBeginInd = new HashMap<String, Integer>();
 		this.encodeEndInd = new HashMap<String, Integer>();
 
@@ -51,6 +59,7 @@ public class NHIRD_OO_Data extends NHIRD_Data {
 				int beginInd = Integer.valueOf(splitedLine[1]);
 				int endInd = Integer.valueOf(splitedLine[2]);
 
+				this.encodeKey.add(key);
 				this.encodeBeginInd.put(key, beginInd);
 				this.encodeEndInd.put(key, endInd);
 			}
@@ -62,5 +71,24 @@ public class NHIRD_OO_Data extends NHIRD_Data {
 		System.out.println("Read OO encode file success! Encode using: " + encodeFile.getAbsolutePath());
 
 	} // end of function encode()
+
+	@Override
+	protected void indexing() {
+
+		String itemKey = new String("DRUG_NO");
+		String drug = new String();
+
+		drugIndex = new HashMap<String, HashSet<String>>();
+
+		for (String dataKey : this.rawDataMap.keySet()) {
+
+			drug = this.getItem(dataKey, itemKey);
+
+			if (!drugIndex.containsKey(drug))
+				drugIndex.put(drug, new HashSet<String>());
+
+			drugIndex.get(drug).add(dataKey);
+		}
+	} // end of function indexing()
 
 } // end of class NHIRD_OO_Data
