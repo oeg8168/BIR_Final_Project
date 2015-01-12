@@ -8,6 +8,41 @@ import dataIO.NHIRD_OO_Data;
 public class CoreAlg {
 
 	/**
+	 * Parse input query
+	 * 
+	 * @param input
+	 *            - String want to parse
+	 * @return HashSet: parsed result
+	 */
+	public static HashSet<String> parseQuery(String input) {
+
+		HashSet<String> resultQuery = new HashSet<String>();
+
+		// Remove all spaces
+		input = input.replaceAll(" ", "");
+
+		for (String string : input.split(",")) {
+			if (string.contains("-")) {
+				String begin = string.split("-")[0];
+				String end = string.split("-")[1];
+
+				try {
+					for (int i = Integer.valueOf(begin); i <= Integer.valueOf(end); i++) {
+						resultQuery.add(String.valueOf(i));
+					}
+				} catch (Exception e) {
+					System.err.println("Query error!");
+					System.err.println(e);
+				}
+			} else {
+				resultQuery.add(string);
+			}
+		}
+
+		return resultQuery;
+	} // end of function parseQuery()
+
+	/**
 	 * Match strings from left to right one by one
 	 * 
 	 * @param s1
@@ -39,7 +74,7 @@ public class CoreAlg {
 	 *            - String array that contain drug queries
 	 * @return HashSet: data keys
 	 */
-	public static HashSet<String> query(NHIRD_CD_Data CD, NHIRD_OO_Data OO, String[] diseases, String[] drugs) {
+	public static HashSet<String> query(NHIRD_CD_Data CD, NHIRD_OO_Data OO, HashSet<String> diseases, HashSet<String> drugs) {
 
 		HashSet<String> resultKeys = new HashSet<String>();
 
@@ -92,6 +127,6 @@ public class CoreAlg {
 		}
 
 		return resultKeys;
-	} // end of class query()
+	} // end of function query()
 
 } // end of class CoreAlg
