@@ -1,5 +1,7 @@
 package GUI;
 
+import java.awt.Cursor;
+import java.awt.Desktop;
 import java.awt.EventQueue;
 
 import javax.swing.JFileChooser;
@@ -16,6 +18,13 @@ import javax.swing.JComboBox;
 import javax.swing.DefaultComboBoxModel;
 import javax.swing.SwingConstants;
 import javax.swing.JSlider;
+
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.awt.Color;
 
 public class MainApplication {
 
@@ -52,7 +61,7 @@ public class MainApplication {
 	private void initialize() {
 		frmNhird = new JFrame();
 		frmNhird.setTitle("NHIRD");
-		frmNhird.setBounds(100, 100, 600, 480);
+		frmNhird.setBounds(100, 100, 600, 530);
 		frmNhird.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frmNhird.getContentPane().setLayout(null);
 
@@ -110,55 +119,65 @@ public class MainApplication {
 		btnBrowseDrugCode.setBounds(180, 196, 200, 30);
 		frmNhird.getContentPane().add(btnBrowseDrugCode);
 
+		JLabel lblDrugCodeFileRemind = new JLabel("Please use excel file downloaded from");
+		lblDrugCodeFileRemind.setLabelFor(btnBrowseDrugCode);
+		lblDrugCodeFileRemind.setBounds(180, 236, 394, 15);
+		frmNhird.getContentPane().add(lblDrugCodeFileRemind);
+
+		JLabel lblLink = new JLabel("<html><u>http://www.nhi.gov.tw/Query/Query1.aspx</u></html>");
+		lblLink.setLabelFor(btnBrowseDrugCode);
+		lblLink.setBounds(180, 261, 394, 15);
+		frmNhird.getContentPane().add(lblLink);
+
 		JSeparator separator_2 = new JSeparator();
-		separator_2.setBounds(10, 236, 564, 2);
+		separator_2.setBounds(10, 286, 564, 2);
 		frmNhird.getContentPane().add(separator_2);
 
 		// Block 3 left: defining sorting orders
 
 		JComboBox<String> comboBox_1 = new JComboBox<String>();
 		comboBox_1.setModel(new DefaultComboBoxModel<String>(new String[] { "ID", "Disease", "Drug", "Time" }));
-		comboBox_1.setBounds(120, 249, 90, 21);
+		comboBox_1.setBounds(120, 299, 90, 21);
 		frmNhird.getContentPane().add(comboBox_1);
 
 		JLabel lblSortingOrder_1 = new JLabel("1st sorting order");
 		lblSortingOrder_1.setLabelFor(comboBox_1);
-		lblSortingOrder_1.setBounds(10, 252, 100, 15);
+		lblSortingOrder_1.setBounds(10, 302, 100, 15);
 		frmNhird.getContentPane().add(lblSortingOrder_1);
 
 		JComboBox<String> comboBox_2 = new JComboBox<String>();
 		comboBox_2.setModel(new DefaultComboBoxModel<String>(new String[] { "ID", "Disease", "Drug", "Time" }));
-		comboBox_2.setBounds(120, 280, 90, 21);
+		comboBox_2.setBounds(120, 330, 90, 21);
 		frmNhird.getContentPane().add(comboBox_2);
 
 		JLabel lblSortingOrder_2 = new JLabel("2nd sorting order");
 		lblSortingOrder_2.setLabelFor(comboBox_2);
-		lblSortingOrder_2.setBounds(10, 283, 100, 15);
+		lblSortingOrder_2.setBounds(10, 333, 100, 15);
 		frmNhird.getContentPane().add(lblSortingOrder_2);
 
 		JComboBox<String> comboBox_3 = new JComboBox<String>();
 		comboBox_3.setModel(new DefaultComboBoxModel<String>(new String[] { "ID", "Disease", "Drug", "Time" }));
-		comboBox_3.setBounds(120, 311, 90, 21);
+		comboBox_3.setBounds(120, 361, 90, 21);
 		frmNhird.getContentPane().add(comboBox_3);
 
 		JLabel lblSortingOrder_3 = new JLabel("3rd sorting order");
 		lblSortingOrder_3.setLabelFor(comboBox_3);
-		lblSortingOrder_3.setBounds(10, 314, 100, 15);
+		lblSortingOrder_3.setBounds(10, 364, 100, 15);
 		frmNhird.getContentPane().add(lblSortingOrder_3);
 
 		JComboBox<String> comboBox_4 = new JComboBox<String>();
 		comboBox_4.setModel(new DefaultComboBoxModel<String>(new String[] { "ID", "Disease", "Drug", "Time" }));
-		comboBox_4.setBounds(120, 342, 90, 21);
+		comboBox_4.setBounds(120, 392, 90, 21);
 		frmNhird.getContentPane().add(comboBox_4);
 
 		JLabel lblSortingOrder_4 = new JLabel("4th sorting order");
 		lblSortingOrder_4.setLabelFor(comboBox_4);
-		lblSortingOrder_4.setBounds(10, 345, 100, 15);
+		lblSortingOrder_4.setBounds(10, 395, 100, 15);
 		frmNhird.getContentPane().add(lblSortingOrder_4);
 
 		JSeparator separator_3v = new JSeparator();
 		separator_3v.setOrientation(SwingConstants.VERTICAL);
-		separator_3v.setBounds(220, 248, 4, 112);
+		separator_3v.setBounds(220, 298, 4, 112);
 		frmNhird.getContentPane().add(separator_3v);
 
 		// Block 3 right: select definite diagnosis threshold
@@ -171,26 +190,26 @@ public class MainApplication {
 		sliderThreshold.setSnapToTicks(true);
 		sliderThreshold.setPaintLabels(true);
 		sliderThreshold.setPaintTicks(true);
-		sliderThreshold.setBounds(234, 273, 200, 50);
+		sliderThreshold.setBounds(234, 323, 200, 50);
 		frmNhird.getContentPane().add(sliderThreshold);
 
 		JLabel lblThreshold = new JLabel("Definite Diagnosis Threshold");
 		lblThreshold.setLabelFor(sliderThreshold);
-		lblThreshold.setBounds(234, 248, 200, 15);
+		lblThreshold.setBounds(234, 298, 200, 15);
 		frmNhird.getContentPane().add(lblThreshold);
 
 		JSeparator separator_3 = new JSeparator();
-		separator_3.setBounds(10, 370, 564, 2);
+		separator_3.setBounds(10, 420, 564, 2);
 		frmNhird.getContentPane().add(separator_3);
 
 		// Block 4:
 
 		JButton btnSubmit = new JButton("Submit");
-		btnSubmit.setBounds(10, 382, 200, 50);
+		btnSubmit.setBounds(10, 432, 200, 50);
 		frmNhird.getContentPane().add(btnSubmit);
 
 		JButton btnAbout = new JButton("About");
-		btnAbout.setBounds(484, 402, 90, 30);
+		btnAbout.setBounds(484, 452, 90, 30);
 		frmNhird.getContentPane().add(btnAbout);
 
 		// ////////////////////
@@ -227,6 +246,24 @@ public class MainApplication {
 				}
 			}
 		});
-	}
+		
+		lblLink.setForeground(Color.BLUE);
+		lblLink.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+		lblLink.addMouseListener(new MouseAdapter() {
+			public void mouseClicked(MouseEvent e) {
+				if (Desktop.isDesktopSupported()) {
+					try {
+						URI uri = new URI("http://www.nhi.gov.tw/Query/Query1.aspx");
+						Desktop.getDesktop().browse(uri);
+					} catch (IOException ex) {
+						ex.printStackTrace();
+					} catch (URISyntaxException ex) {
+						ex.printStackTrace();
+					}
+				}
 
+			}
+		});
+
+	}
 } // end of class MainApplication
