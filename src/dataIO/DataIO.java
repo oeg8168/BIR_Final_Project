@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.InputStreamReader;
 import java.util.HashMap;
+import java.util.HashSet;
 
 /**
  * Class for data I/O
@@ -20,6 +21,7 @@ public class DataIO {
 	 * @param file
 	 */
 	public static void viewFileContent(File file) {
+
 		try {
 			BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(file)));
 			while (br.ready()) {
@@ -30,7 +32,7 @@ public class DataIO {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-	}
+	} // end of function viewFileContent()
 
 	/**
 	 * Read file and store into HashMap
@@ -55,10 +57,43 @@ public class DataIO {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		
+
 		System.out.println("Read file success! File path: " + file.getAbsolutePath());
-		
+
 		return map;
-	}
+	}// end of function readFile()
+
+	/**
+	 * Read drug files get from http://www.nhi.gov.tw/Query/Query1.aspx
+	 * 
+	 * @param file
+	 *            - input file
+	 * @return HashSet: DRUG_NO
+	 */
+	public static HashSet<String> readDrugFile(File file) {
+
+		HashSet<String> drugSet = new HashSet<String>();
+
+		String temp;
+		int indexL;
+		int indexR;
+
+		try {
+			BufferedReader br = new BufferedReader(new InputStreamReader(new FileInputStream(file)));
+			while (br.ready()) {
+				temp = br.readLine();
+				if (temp.contains("lblQ1ID")) {
+					indexL = temp.indexOf(">");
+					indexR = temp.indexOf("<", indexL);
+					drugSet.add(temp.substring(indexL + 1, indexR));
+				}
+			}
+			br.close();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return drugSet;
+	} // end of function readDrugFile()
 
 } // end of class DataIO
