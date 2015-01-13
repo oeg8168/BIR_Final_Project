@@ -19,7 +19,7 @@ public abstract class NHIRD_Data {
 	public HashMap<String, String> rawDataMap;
 
 	// Constructor
-	public NHIRD_Data(File file) throws Exception {
+	public NHIRD_Data(File file) {
 		this.rawDataMap = DataIO.readFile(file);
 
 		encode();
@@ -31,7 +31,7 @@ public abstract class NHIRD_Data {
 	 * 
 	 * @throws Exception
 	 */
-	abstract protected void encode() throws Exception;
+	abstract protected void encode();
 
 	/**
 	 * Abstract method to make index of data by its type
