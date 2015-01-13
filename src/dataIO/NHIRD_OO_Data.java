@@ -14,14 +14,14 @@ public class NHIRD_OO_Data extends NHIRD_Data {
 
 	public HashMap<String, HashSet<String>> drugIndex;
 
-	public NHIRD_OO_Data(File file) throws Exception {
+	public NHIRD_OO_Data(File file) {
 		super(file);
 
 		indexing();
 	}
 
 	@Override
-	protected void encode() throws Exception {
+	protected void encode() {
 
 		String encodeFilePath = Global.encodePath + "OO/";
 
@@ -42,7 +42,7 @@ public class NHIRD_OO_Data extends NHIRD_Data {
 
 		default:
 			System.err.println("Input file error! (Not OO file)");
-			throw new Exception();
+			return;
 		}
 
 		File encodeFile = new File(encodeFilePath);

@@ -14,14 +14,14 @@ public class NHIRD_CD_Data extends NHIRD_Data {
 
 	public HashMap<String, HashSet<String>> diseaseIndex;
 
-	public NHIRD_CD_Data(File file) throws Exception {
+	public NHIRD_CD_Data(File file) {
 		super(file);
 
 		indexing();
 	}
 
 	@Override
-	protected void encode() throws Exception {
+	protected void encode() {
 
 		String encodeFilePath = Global.encodePath + "CD/";
 
@@ -42,7 +42,7 @@ public class NHIRD_CD_Data extends NHIRD_Data {
 
 		default:
 			System.err.println("Input file error! (Not CD file)");
-			throw new Exception();
+			return;
 		}
 
 		File encodeFile = new File(encodeFilePath);
