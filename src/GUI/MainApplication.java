@@ -1,31 +1,11 @@
 package GUI;
 
+import java.awt.Color;
 import java.awt.Cursor;
 import java.awt.Desktop;
 import java.awt.EventQueue;
-
-import javax.swing.JFileChooser;
-import javax.swing.JFrame;
-import javax.swing.JButton;
-import javax.swing.JLabel;
-
-import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
-
-import javax.swing.JOptionPane;
-import javax.swing.JTextField;
-import javax.swing.JSeparator;
-import javax.swing.JComboBox;
-import javax.swing.DefaultComboBoxModel;
-import javax.swing.SwingConstants;
-import javax.swing.JSlider;
-import javax.swing.filechooser.FileNameExtensionFilter;
-
-import core.CoreAlg;
-import dataIO.DataIO;
-import dataIO.NHIRD_CD_Data;
-import dataIO.NHIRD_OO_Data;
-
+import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.io.File;
@@ -34,11 +14,30 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.HashSet;
-import java.awt.Color;
+
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JFileChooser;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JSeparator;
+import javax.swing.JSlider;
+import javax.swing.JTextField;
+import javax.swing.SwingConstants;
 
 import jxl.Workbook;
+import jxl.format.CellFormat;
+import jxl.format.Colour;
 import jxl.write.Label;
+import jxl.write.WritableCellFormat;
 import jxl.write.WritableWorkbook;
+import jxl.write.biff.RowsExceededException;
+import core.CoreAlg;
+import dataIO.DataIO;
+import dataIO.NHIRD_CD_Data;
+import dataIO.NHIRD_OO_Data;
 
 public class MainApplication {
 
@@ -78,7 +77,7 @@ public class MainApplication {
 	private void initialize() {
 		frmNhird = new JFrame();
 		frmNhird.setResizable(false);
-		frmNhird.setTitle("NHIRD");
+		frmNhird.setTitle("NHIRD Tool");
 		frmNhird.setBounds(100, 100, 600, 530);
 		frmNhird.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frmNhird.getContentPane().setLayout(null);
@@ -93,12 +92,12 @@ public class MainApplication {
 		btnSelectOOFile.setBounds(10, 66, 200, 50);
 		frmNhird.getContentPane().add(btnSelectOOFile);
 
-		JLabel lblCDFilePath = new JLabel("CD file path: ");
+		final JLabel lblCDFilePath = new JLabel("CD file path: ");
 		lblCDFilePath.setLabelFor(btnSelectCDFile);
 		lblCDFilePath.setBounds(220, 28, 354, 15);
 		frmNhird.getContentPane().add(lblCDFilePath);
 
-		JLabel lblOOFilePath = new JLabel("OO file path: ");
+		final JLabel lblOOFilePath = new JLabel("OO file path: ");
 		lblOOFilePath.setLabelFor(btnSelectOOFile);
 		lblOOFilePath.setBounds(220, 84, 354, 15);
 		frmNhird.getContentPane().add(lblOOFilePath);
@@ -153,8 +152,9 @@ public class MainApplication {
 
 		// Block 3 left: defining sorting orders
 
-		JComboBox<String> comboBox_1 = new JComboBox<String>();
+		final JComboBox<String> comboBox_1 = new JComboBox<String>();
 		comboBox_1.setModel(new DefaultComboBoxModel<String>(new String[] { "ID", "Disease", "Drug", "Time" }));
+		comboBox_1.setSelectedIndex(0);
 		comboBox_1.setBounds(120, 299, 90, 21);
 		frmNhird.getContentPane().add(comboBox_1);
 
@@ -163,8 +163,9 @@ public class MainApplication {
 		lblSortingOrder_1.setBounds(10, 302, 100, 15);
 		frmNhird.getContentPane().add(lblSortingOrder_1);
 
-		JComboBox<String> comboBox_2 = new JComboBox<String>();
+		final JComboBox<String> comboBox_2 = new JComboBox<String>();
 		comboBox_2.setModel(new DefaultComboBoxModel<String>(new String[] { "ID", "Disease", "Drug", "Time" }));
+		comboBox_2.setSelectedIndex(1);
 		comboBox_2.setBounds(120, 330, 90, 21);
 		frmNhird.getContentPane().add(comboBox_2);
 
@@ -173,8 +174,9 @@ public class MainApplication {
 		lblSortingOrder_2.setBounds(10, 333, 100, 15);
 		frmNhird.getContentPane().add(lblSortingOrder_2);
 
-		JComboBox<String> comboBox_3 = new JComboBox<String>();
+		final JComboBox<String> comboBox_3 = new JComboBox<String>();
 		comboBox_3.setModel(new DefaultComboBoxModel<String>(new String[] { "ID", "Disease", "Drug", "Time" }));
+		comboBox_3.setSelectedIndex(2);
 		comboBox_3.setBounds(120, 361, 90, 21);
 		frmNhird.getContentPane().add(comboBox_3);
 
@@ -183,8 +185,9 @@ public class MainApplication {
 		lblSortingOrder_3.setBounds(10, 364, 100, 15);
 		frmNhird.getContentPane().add(lblSortingOrder_3);
 
-		JComboBox<String> comboBox_4 = new JComboBox<String>();
+		final JComboBox<String> comboBox_4 = new JComboBox<String>();
 		comboBox_4.setModel(new DefaultComboBoxModel<String>(new String[] { "ID", "Disease", "Drug", "Time" }));
+		comboBox_4.setSelectedIndex(3);
 		comboBox_4.setBounds(120, 392, 90, 21);
 		frmNhird.getContentPane().add(comboBox_4);
 
@@ -226,7 +229,7 @@ public class MainApplication {
 		btnSubmit.setBounds(10, 432, 200, 50);
 		frmNhird.getContentPane().add(btnSubmit);
 
-		JLabel lblSubmitCheck = new JLabel("");
+		final JLabel lblSubmitCheck = new JLabel("");
 		lblSubmitCheck.setForeground(Color.RED);
 		lblSubmitCheck.setBounds(220, 432, 260, 50);
 		frmNhird.getContentPane().add(lblSubmitCheck);
@@ -293,6 +296,8 @@ public class MainApplication {
 		btnSubmit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 
+				lblSubmitCheck.setText("Processing...");
+
 				boolean passFlag = true;
 				String alertString = new String("<html>");
 
@@ -311,7 +316,6 @@ public class MainApplication {
 					lblSubmitCheck.setText(alertString);
 
 				} else {
-					lblSubmitCheck.setText("Processing...");
 
 					NHIRD_OO_Data OO = new NHIRD_OO_Data(new File(OOFilePath));
 					NHIRD_CD_Data CD = new NHIRD_CD_Data(new File(CDFilePath));
@@ -331,55 +335,94 @@ public class MainApplication {
 					String[] sortingOrder = { comboBox_1.getSelectedItem().toString(), comboBox_2.getSelectedItem().toString(), comboBox_3.getSelectedItem().toString(), comboBox_4.getSelectedItem().toString() };
 
 					ArrayList<String> sortedKeys = CoreAlg.sortByOrder(CD, OO, queryResult, sortingOrder);
-					
+
 					JFileChooser chooser = new JFileChooser();
 					chooser.setFileSelectionMode(JFileChooser.DIRECTORIES_ONLY);
+					chooser.setDialogTitle("Choose destination of output file");
 					if (chooser.showOpenDialog(null) == JFileChooser.APPROVE_OPTION) {
 						System.out.println(chooser.getSelectedFile().getAbsolutePath());
 						outputPath = chooser.getSelectedFile().getAbsolutePath();
-					}
-					
-					try {
-						WritableWorkbook workbook = Workbook.createWorkbook(new File(outputPath + "/output.xls"));
-						
-						workbook.createSheet("result", 0);
-						
-						workbook.getSheet(0).addCell(new Label(0,0,"ID"));
-						workbook.getSheet(0).addCell(new Label(1,0,"ID_SEX"));
-						workbook.getSheet(0).addCell(new Label(2,0,"ID_BIRTHDAY"));
-						workbook.getSheet(0).addCell(new Label(3,0,"ACODE_ICD9_1"));
-						workbook.getSheet(0).addCell(new Label(4,0,"ACODE_ICD9_2"));
-						workbook.getSheet(0).addCell(new Label(5,0,"ACODE_ICD9_3"));
-						workbook.getSheet(0).addCell(new Label(6,0,"DRUG_NO"));
-						workbook.getSheet(0).addCell(new Label(7,0,"DRUG_DAY"));
-						workbook.getSheet(0).addCell(new Label(8,0,"TOTAL_QTY"));
-						workbook.getSheet(0).addCell(new Label(9,0,"FUNC_DATE"));
-						
-						int row = 1;
-						for (String key : sortedKeys) {
-							
-							workbook.getSheet(0).addCell(new Label(0,row,CD.getItem(key, "ID")));
-							workbook.getSheet(0).addCell(new Label(1,row,CD.getItem(key, "ID_SEX")));
-							workbook.getSheet(0).addCell(new Label(2,row,CD.getItem(key, "ID_BIRTHDAY")));
-							workbook.getSheet(0).addCell(new Label(3,row,CD.getItem(key, "ACODE_ICD9_1")));
-							workbook.getSheet(0).addCell(new Label(4,row,CD.getItem(key, "ACODE_ICD9_2")));
-							workbook.getSheet(0).addCell(new Label(5,row,CD.getItem(key, "ACODE_ICD9_3")));
-							workbook.getSheet(0).addCell(new Label(6,row,OO.getItem(key, "DRUG_NO")));
-							workbook.getSheet(0).addCell(new Label(7,row,CD.getItem(key, "DRUG_DAY")));
-							workbook.getSheet(0).addCell(new Label(8,row,OO.getItem(key, "TOTAL_QTY")));
-							workbook.getSheet(0).addCell(new Label(9,row,CD.getItem(key, "FUNC_DATE")));
-							
-							row++;
+
+						int sheet = 0;
+						int row = 0;
+						try {
+							WritableWorkbook workbook = Workbook.createWorkbook(new File(outputPath + "/output.xls"));
+
+							String previousData = new String();
+							String currentData = new String();
+
+							for (String key : sortedKeys) {
+
+								if (row == 0) {
+									workbook.createSheet("result" + sheet, sheet);
+
+									workbook.getSheet(sheet).addCell(new Label(0, row, "ID"));
+									workbook.getSheet(sheet).addCell(new Label(1, row, "ID_SEX"));
+									workbook.getSheet(sheet).addCell(new Label(2, row, "ID_BIRTHDAY"));
+									workbook.getSheet(sheet).addCell(new Label(3, row, "ACODE_ICD9_1"));
+									workbook.getSheet(sheet).addCell(new Label(4, row, "ACODE_ICD9_2"));
+									workbook.getSheet(sheet).addCell(new Label(5, row, "ACODE_ICD9_3"));
+									workbook.getSheet(sheet).addCell(new Label(6, row, "DRUG_NO"));
+									workbook.getSheet(sheet).addCell(new Label(7, row, "DRUG_DAY"));
+									workbook.getSheet(sheet).addCell(new Label(8, row, "TOTAL_QTY"));
+									workbook.getSheet(sheet).addCell(new Label(9, row, "FUNC_DATE"));
+
+									row++;
+								}
+
+								switch (comboBox_1.getSelectedItem().toString()) {
+								case "ID":
+									currentData = CD.getItem(key, "ID");
+									break;
+								case "Disease":
+									currentData = CD.getItem(key, "ACODE_ICD9_1");
+									break;
+								case "Drug":
+									currentData = OO.getItem(key, "DRUG_NO");
+									break;
+								case "Time":
+									currentData = CD.getItem(key, "FUNC_DATE");
+									break;
+
+								default:
+									System.err.println("comboBox_1 error!");
+									break;
+								}
+
+								WritableCellFormat format = new WritableCellFormat();
+								if (!currentData.equals(previousData)) {
+									format.setBackground(Colour.YELLOW);
+								}
+
+								previousData = currentData;
+
+								workbook.getSheet(sheet).addCell(new Label(0, row, CD.getItem(key, "ID"), format));
+								workbook.getSheet(sheet).addCell(new Label(1, row, CD.getItem(key, "ID_SEX"), format));
+								workbook.getSheet(sheet).addCell(new Label(2, row, CD.getItem(key, "ID_BIRTHDAY"), format));
+								workbook.getSheet(sheet).addCell(new Label(3, row, CD.getItem(key, "ACODE_ICD9_1"), format));
+								workbook.getSheet(sheet).addCell(new Label(4, row, CD.getItem(key, "ACODE_ICD9_2"), format));
+								workbook.getSheet(sheet).addCell(new Label(5, row, CD.getItem(key, "ACODE_ICD9_3"), format));
+								workbook.getSheet(sheet).addCell(new Label(6, row, OO.getItem(key, "DRUG_NO"), format));
+								workbook.getSheet(sheet).addCell(new Label(7, row, CD.getItem(key, "DRUG_DAY"), format));
+								workbook.getSheet(sheet).addCell(new Label(8, row, OO.getItem(key, "TOTAL_QTY"), format));
+								workbook.getSheet(sheet).addCell(new Label(9, row, CD.getItem(key, "FUNC_DATE"), format));
+
+								row++;
+
+								if (row + 1 > 65000) {
+									sheet++;
+									row = 0;
+								}
+							}
+
+							workbook.write();
+							workbook.close();
+
+						} catch (Exception e) {
+							e.printStackTrace();
 						}
-						
-						workbook.write();
-						workbook.close();
-						
-					} catch (Exception e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
 					}
-					
+
 					lblSubmitCheck.setText("");
 				}
 
@@ -388,7 +431,17 @@ public class MainApplication {
 
 		btnAbout.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
-				JOptionPane.showMessageDialog(frmNhird, "<html>aaa<br>ddd</html>", "Title", JOptionPane.PLAIN_MESSAGE);
+				String info = new String("<html>");
+				info += "Final project of the course<br>";
+				info += "\"Biomedical Information Retrieval\" (2014 Fall)<br>";
+				info += "====================<br>";
+				info += "Author: OEG<br>";
+				info += "E-Mail: Q56031037@ncku.edu.tw<br>";
+				info += "Department: NCKU IMI<br>";
+				info += "2015/01";
+				info += "</html>";
+
+				JOptionPane.showMessageDialog(frmNhird, info, "Information", JOptionPane.PLAIN_MESSAGE);
 			}
 		});
 
