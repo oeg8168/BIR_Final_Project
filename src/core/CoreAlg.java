@@ -1,5 +1,7 @@
 package core;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 
 import dataIO.NHIRD_CD_Data;
@@ -20,6 +22,10 @@ public class CoreAlg {
 
 		// Remove all spaces
 		input = input.replaceAll(" ", "");
+		
+		if (input.isEmpty()) {
+			return resultQuery;
+		}
 
 		for (String string : input.split(",")) {
 			if (string.contains("-")) {
@@ -77,8 +83,8 @@ public class CoreAlg {
 	public static HashSet<String> query(NHIRD_CD_Data CD, NHIRD_OO_Data OO, HashSet<String> diseases, HashSet<String> drugs) {
 
 		HashSet<String> resultKeys = new HashSet<String>();
-
-		if (diseases == null) {
+		
+		if (diseases == null || diseases.size() == 0) {
 			System.out.println("Query drugs");
 
 			for (String index : OO.drugIndex.keySet()) {
@@ -89,7 +95,7 @@ public class CoreAlg {
 				}
 			}
 
-		} else if (drugs == null) {
+		} else if (drugs == null || drugs.size() == 0) {
 			System.out.println("Query diseases");
 
 			for (String index : CD.diseaseIndex.keySet()) {
@@ -128,5 +134,61 @@ public class CoreAlg {
 
 		return resultKeys;
 	} // end of function query()
+
+	/**
+	 * Sort retrieved keys by user defined sorting order
+	 * 
+	 * @param CD
+	 *            - CD data
+	 * @param OO
+	 *            - OO data
+	 * @param unsortKeys
+	 *            - Already retrieved keys after query
+	 * @param sortingOrder
+	 *            - User defined sorting order
+	 * @return ArrayList: sorted keys
+	 */
+	public static ArrayList<String> sortByOrder(NHIRD_CD_Data CD, NHIRD_OO_Data OO, HashSet<String> unsortKeys, String[] sortingOrder) {
+
+		ArrayList<String> tempStrings = new ArrayList<String>();
+		ArrayList<String> sortedKeys = new ArrayList<String>();
+
+		for (String key : unsortKeys) {
+			String temp = new String();
+			for (String order : sortingOrder) {
+
+				switch (order) {
+				case "ID":
+					temp += CD.getItem(key, "ID");
+					break;
+				case "Disease":
+					temp += CD.getItem(key, "ACODE_ICD9_1");
+					temp += CD.getItem(key, "ACODE_ICD9_2");
+					temp += CD.getItem(key, "ACODE_ICD9_3");
+					break;
+				case "Drug":
+					temp += OO.getItem(key, "DRUG_NO");
+					break;
+				case "Time":
+					temp += CD.getItem(key, "FUNC_DATE");
+					break;
+
+				default:
+					System.err.println("Sorting order error!");
+					break;
+				}
+			}
+			temp += key;
+			tempStrings.add(temp);
+		}
+
+		Collections.sort(tempStrings);
+
+		for (String string : tempStrings) {
+			sortedKeys.add(string.substring(string.length() - 57, string.length()));
+		}
+
+		return sortedKeys;
+	} // end of function sortByOrder()
 
 } // end of class CoreAlg
