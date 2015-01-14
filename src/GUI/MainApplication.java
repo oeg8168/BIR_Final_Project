@@ -28,12 +28,10 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
 import jxl.Workbook;
-import jxl.format.CellFormat;
 import jxl.format.Colour;
 import jxl.write.Label;
 import jxl.write.WritableCellFormat;
 import jxl.write.WritableWorkbook;
-import jxl.write.biff.RowsExceededException;
 import core.CoreAlg;
 import dataIO.DataIO;
 import dataIO.NHIRD_CD_Data;
@@ -203,7 +201,7 @@ public class MainApplication {
 
 		// Block 3 right: select definite diagnosis threshold
 
-		JSlider sliderThreshold = new JSlider();
+		final JSlider sliderThreshold = new JSlider();
 		sliderThreshold.setMajorTickSpacing(1);
 		sliderThreshold.setMinimum(1);
 		sliderThreshold.setMaximum(5);
@@ -317,8 +315,19 @@ public class MainApplication {
 
 				} else {
 
-					NHIRD_OO_Data OO = new NHIRD_OO_Data(new File(OOFilePath));
-					NHIRD_CD_Data CD = new NHIRD_CD_Data(new File(CDFilePath));
+					NHIRD_OO_Data OO;
+					if (new File(OOFilePath).isDirectory()) {
+						OO = new NHIRD_OO_Data(new File(OOFilePath).listFiles());
+					} else {
+						OO = new NHIRD_OO_Data(new File(OOFilePath));
+					}
+
+					NHIRD_CD_Data CD;
+					if (new File(CDFilePath).isDirectory()) {
+						CD = new NHIRD_CD_Data(new File(CDFilePath).listFiles());
+					} else {
+						CD = new NHIRD_CD_Data(new File(CDFilePath));
+					}
 
 					HashSet<String> diseases = CoreAlg.parseQuery(textFieldDiseaseCode.getText());
 					HashSet<String> drugs;
@@ -331,6 +340,8 @@ public class MainApplication {
 					}
 
 					HashSet<String> queryResult = CoreAlg.query(CD, OO, diseases, drugs);
+
+					queryResult = CoreAlg.definiteDiagnosis(CD, queryResult, sliderThreshold.getValue());
 
 					String[] sortingOrder = { comboBox_1.getSelectedItem().toString(), comboBox_2.getSelectedItem().toString(), comboBox_3.getSelectedItem().toString(), comboBox_4.getSelectedItem().toString() };
 
@@ -417,7 +428,7 @@ public class MainApplication {
 
 							workbook.write();
 							workbook.close();
-
+							System.out.println("Output success!");
 						} catch (Exception e) {
 							e.printStackTrace();
 						}
@@ -434,6 +445,8 @@ public class MainApplication {
 				String info = new String("<html>");
 				info += "Final project of the course<br>";
 				info += "\"Biomedical Information Retrieval\" (2014 Fall)<br>";
+				info += "====================<br>";
+				info += "https://github.com/oeg8168/BIR_Final_Project<br>";
 				info += "====================<br>";
 				info += "Author: OEG<br>";
 				info += "E-Mail: Q56031037@ncku.edu.tw<br>";
