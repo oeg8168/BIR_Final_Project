@@ -19,6 +19,12 @@ public class NHIRD_OO_Data extends NHIRD_Data {
 
 		indexing();
 	}
+	
+	public NHIRD_OO_Data(File[] files) {
+		super(files);
+
+		indexing();
+	}
 
 	@Override
 	protected void encode() {

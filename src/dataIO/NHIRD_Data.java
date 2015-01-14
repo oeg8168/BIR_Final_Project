@@ -25,6 +25,16 @@ public abstract class NHIRD_Data {
 		encode();
 	} // end of constructor
 
+	// Constructor
+	public NHIRD_Data(File[] files) {
+		this.rawDataMap = new HashMap<String, String>();
+		for (File file : files) {
+			this.rawDataMap.putAll(DataIO.readFile(file));
+		}
+
+		encode();
+	} // end of constructor
+
 	/**
 	 * Abstract method to define encode version of data <br>
 	 * (By detecting dataLength of one data row)
