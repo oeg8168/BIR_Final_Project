@@ -3,6 +3,7 @@ package core;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.Hashtable;
 
 import dataIO.NHIRD_CD_Data;
 import dataIO.NHIRD_OO_Data;
@@ -22,7 +23,7 @@ public class CoreAlg {
 
 		// Remove all spaces
 		input = input.replaceAll(" ", "");
-		
+
 		if (input.isEmpty()) {
 			return resultQuery;
 		}
@@ -83,7 +84,7 @@ public class CoreAlg {
 	public static HashSet<String> query(NHIRD_CD_Data CD, NHIRD_OO_Data OO, HashSet<String> diseases, HashSet<String> drugs) {
 
 		HashSet<String> resultKeys = new HashSet<String>();
-		
+
 		if (diseases == null || diseases.size() == 0) {
 			System.out.println("Query drugs");
 
@@ -134,6 +135,64 @@ public class CoreAlg {
 
 		return resultKeys;
 	} // end of function query()
+
+	/**
+	 * Definite diagnosis filter by threshold
+	 * 
+	 * @param CD
+	 *            - CD data
+	 * @param queryKeys
+	 *            - Keys after query
+	 * @param threshold
+	 *            - Definite diagnosis threshold
+	 * @return HashSet: filter result
+	 */
+	public static HashSet<String> definiteDiagnosis(NHIRD_CD_Data CD, HashSet<String> queryKeys, int threshold) {
+
+		if (threshold == 1) {
+			return queryKeys;
+		}
+
+		HashSet<String> resultKeys = new HashSet<String>();
+
+		Hashtable<String, ArrayList<String>> temp = new Hashtable<String, ArrayList<String>>();
+
+		for (String key : queryKeys) {
+			String ID = CD.getItem(key, "ID");
+			String ICD9_1 = CD.getItem(key, "ACODE_ICD9_1").replaceAll(" ", "");
+			String ICD9_2 = CD.getItem(key, "ACODE_ICD9_2").replaceAll(" ", "");
+			String ICD9_3 = CD.getItem(key, "ACODE_ICD9_3").replaceAll(" ", "");
+
+			if (!ICD9_1.isEmpty()) {
+				if (!temp.containsKey(ID + ICD9_1)) {
+					temp.put(ID + ICD9_1, new ArrayList<String>());
+				}
+				temp.get(ID + ICD9_1).add(key);
+			}
+
+			if (!ICD9_2.isEmpty()) {
+				if (!temp.containsKey(ID + ICD9_2)) {
+					temp.put(ID + ICD9_2, new ArrayList<String>());
+				}
+				temp.get(ID + ICD9_2).add(key);
+			}
+
+			if (!ICD9_3.isEmpty()) {
+				if (!temp.containsKey(ID + ICD9_3)) {
+					temp.put(ID + ICD9_3, new ArrayList<String>());
+				}
+				temp.get(ID + ICD9_3).add(key);
+			}
+		}
+
+		for (String ID_ICD9 : temp.keySet()) {
+			if (temp.get(ID_ICD9).size() >= threshold) {
+				resultKeys.addAll(temp.get(ID_ICD9));
+			}
+		}
+
+		return resultKeys;
+	}// end of function definiteDiagnosis()
 
 	/**
 	 * Sort retrieved keys by user defined sorting order
