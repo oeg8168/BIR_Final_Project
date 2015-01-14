@@ -83,19 +83,23 @@ public class MainApplication {
 		// Block 1: select input files
 
 		JButton btnSelectCDFile = new JButton("Select CD file from disk");
+		btnSelectCDFile.setToolTipText("<html>\r\nSelect NHIRD-CD file from disk.<br>\r\nYou can also select a folder with all CD files inside.\r\n</html>");
 		btnSelectCDFile.setBounds(10, 10, 200, 50);
 		frmNhird.getContentPane().add(btnSelectCDFile);
 
 		JButton btnSelectOOFile = new JButton("Select OO file from disk");
+		btnSelectOOFile.setToolTipText("<html>\r\nSelect NHIRD-OO file from disk.<br>\r\nYou can also select a folder with all OO files inside.\r\n</html>");
 		btnSelectOOFile.setBounds(10, 66, 200, 50);
 		frmNhird.getContentPane().add(btnSelectOOFile);
 
 		final JLabel lblCDFilePath = new JLabel("CD file path: ");
+		lblCDFilePath.setToolTipText("CD file/folder path");
 		lblCDFilePath.setLabelFor(btnSelectCDFile);
 		lblCDFilePath.setBounds(220, 28, 354, 15);
 		frmNhird.getContentPane().add(lblCDFilePath);
 
 		final JLabel lblOOFilePath = new JLabel("OO file path: ");
+		lblOOFilePath.setToolTipText("OO file/folder path");
 		lblOOFilePath.setLabelFor(btnSelectOOFile);
 		lblOOFilePath.setBounds(220, 84, 354, 15);
 		frmNhird.getContentPane().add(lblOOFilePath);
@@ -107,11 +111,13 @@ public class MainApplication {
 		// Block 2: input disease and drug codes
 
 		JLabel lblDiseaseCode = new JLabel("Disease Code (ICD9): ");
+		lblDiseaseCode.setToolTipText("<html>\r\nEnter discase code (ICD9 code) for query.<br>\r\nYou can use \",\" to separate querys.<br>\r\nYou can also use \"-\" to describe a range. (V code does not support)<br>\r\n-----<br>\r\nExample: \"200-250, 25500, V35\"\r\n</html>");
 		lblDiseaseCode.setLabelFor(textFieldDiseaseCode);
 		lblDiseaseCode.setBounds(10, 141, 130, 15);
 		frmNhird.getContentPane().add(lblDiseaseCode);
 
 		JLabel lblDrugCode = new JLabel("Drug Code: ");
+		lblDrugCode.setToolTipText("<html>\r\nEnter drug code for query.<br>\r\nYou can use \",\" to separate querys.<br>\r\nBy typing begining words, you can retrieve drugs with that begining<br>\r\n(That is, \"A03\" will retrieve \"A03*********\")<br>\r\n-----<br>\r\nExample: \"A0303051G0, A05\"\r\n</html>");
 		lblDrugCode.setLabelFor(textFieldDrugCode);
 		lblDrugCode.setBounds(10, 172, 130, 15);
 		frmNhird.getContentPane().add(lblDrugCode);
@@ -157,6 +163,7 @@ public class MainApplication {
 		frmNhird.getContentPane().add(comboBox_1);
 
 		JLabel lblSortingOrder_1 = new JLabel("1st sorting order");
+		lblSortingOrder_1.setToolTipText("<html>\r\nYou can determining sorting orders of retrieved data.<br>\r\n(First sort by ID, then sort by Disease...etc.)<br>\r\nFirst data of 1st sorting order will be label yellow.\r\n</html>");
 		lblSortingOrder_1.setLabelFor(comboBox_1);
 		lblSortingOrder_1.setBounds(10, 302, 100, 15);
 		frmNhird.getContentPane().add(lblSortingOrder_1);
@@ -168,6 +175,7 @@ public class MainApplication {
 		frmNhird.getContentPane().add(comboBox_2);
 
 		JLabel lblSortingOrder_2 = new JLabel("2nd sorting order");
+		lblSortingOrder_2.setToolTipText("<html>\r\nYou can determining sorting orders of retrieved data.<br>\r\n(First sort by ID, then sort by Disease...etc.)<br>\r\nFirst data of 1st sorting order will be label yellow.\r\n</html>");
 		lblSortingOrder_2.setLabelFor(comboBox_2);
 		lblSortingOrder_2.setBounds(10, 333, 100, 15);
 		frmNhird.getContentPane().add(lblSortingOrder_2);
@@ -179,6 +187,7 @@ public class MainApplication {
 		frmNhird.getContentPane().add(comboBox_3);
 
 		JLabel lblSortingOrder_3 = new JLabel("3rd sorting order");
+		lblSortingOrder_3.setToolTipText("<html>\r\nYou can determining sorting orders of retrieved data.<br>\r\n(First sort by ID, then sort by Disease...etc.)<br>\r\nFirst data of 1st sorting order will be label yellow.\r\n</html>");
 		lblSortingOrder_3.setLabelFor(comboBox_3);
 		lblSortingOrder_3.setBounds(10, 364, 100, 15);
 		frmNhird.getContentPane().add(lblSortingOrder_3);
@@ -190,6 +199,7 @@ public class MainApplication {
 		frmNhird.getContentPane().add(comboBox_4);
 
 		JLabel lblSortingOrder_4 = new JLabel("4th sorting order");
+		lblSortingOrder_4.setToolTipText("<html>\r\nYou can determining sorting orders of retrieved data.<br>\r\n(First sort by ID, then sort by Disease...etc.)<br>\r\nFirst data of 1st sorting order will be label yellow.\r\n</html>");
 		lblSortingOrder_4.setLabelFor(comboBox_4);
 		lblSortingOrder_4.setBounds(10, 395, 100, 15);
 		frmNhird.getContentPane().add(lblSortingOrder_4);
@@ -213,6 +223,7 @@ public class MainApplication {
 		frmNhird.getContentPane().add(sliderThreshold);
 
 		JLabel lblThreshold = new JLabel("Definite Diagnosis Threshold");
+		lblThreshold.setToolTipText("<html>\r\nDetermining definite diagnosis threshold, if retrieved<br>\r\ndata is less than threshold, the data won't be print.<br>\r\n(Default = 1)\r\n</html>");
 		lblThreshold.setLabelFor(sliderThreshold);
 		lblThreshold.setBounds(234, 298, 200, 15);
 		frmNhird.getContentPane().add(lblThreshold);
